@@ -1,7 +1,12 @@
 import { join } from "path";
 import { existsSync, readFileSync } from "fs";
-import recursiveCopy from "recursive-copy";
-function copyDependency(dependency, baseDir, rootAssetsPath) {
+const recursiveCopy = require("recursive-copy");
+function copyDependency(
+  dependency: string,
+  baseDir: string,
+  rootAssetsPath: string
+) {
+  console.log("Evaluating dependency", dependency);
   const path = join(baseDir, "node_modules", dependency);
   if (existsSync(path)) {
     let assetsPath = rootAssetsPath;
@@ -26,11 +31,12 @@ function copyLocalAssets(basePath = process.cwd()) {
   const {
     dependencies,
     devDependencies,
-    localAssets: { path: rootAssetsPath = "./assets", includeDev = false },
+    localAssets: { path: rootAssetsPath = "./assets", includeDev = false } = {},
   } = JSON.parse(readFileSync("./package.json", { encoding: "utf8" }));
   const baseDir = process.cwd();
-  const copy = (d) => copyDependency(d, baseDir, rootAssetsPath);
-  if (dependencies) dependencies.forEach(copy);
-  if (devDependencies && includeDev) devDependencies.forEach(copy);
+  console.log("dependencies are", dependencies);
+  const copy = (d: string) => copyDependency(d, baseDir, rootAssetsPath);
+  if (dependencies) Object.keys(dependencies).forEach(copy);
+  if (devDependencies && includeDev) Object.keys(devDependencies).forEach(copy);
 }
 export { copyDependency, copyLocalAssets };

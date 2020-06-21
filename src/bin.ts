@@ -1,12 +1,24 @@
+#!/usr/bin/env node
 import { readFileSync, writeFileSync } from "fs";
 import { program } from "commander";
+import { copyLocalAssets } from "./";
+const {
+  localAssets: { path = "./assets", includeDev = false } = {},
+} = JSON.parse(readFileSync("./package.json", { encoding: "utf8" }));
 program
   .command("start")
-  .description("hoist local assets")
-  .action(() => {});
+  .description(
+    "hoist local assets from dependencies" + includeDev
+      ? " and devDependencies"
+      : ""
+  )
+  .action(() => {
+    console.log("hoisting assets");
+    copyLocalAssets();
+  });
 program
   .command("set-path <path>")
-  .description("set the local assets path")
+  .description("set the local assets path (currently " + path + ")")
   .action((path) => {
     const o = JSON.parse(readFileSync("./package.json", { encoding: "utf8" }));
     if (!o.localAssets) o.localAssets = {};
@@ -17,7 +29,11 @@ program
   });
 program
   .command("set-usedev")
-  .description("use dev dependencies for asset path search")
+  .description(
+    "use dev dependencies for asset path search (currently " +
+      Boolean(includeDev).toString() +
+      ")"
+  )
   .action(() => {
     const o = JSON.parse(readFileSync("./package.json", { encoding: "utf8" }));
     if (!o.localAssets) o.localAssets = {};
@@ -28,7 +44,11 @@ program
   });
 program
   .command("set-nodev")
-  .description("do not use dev dependencies for asset path search")
+  .description(
+    "do not use dev dependencies for asset path search (currently " +
+      Boolean(includeDev).toString() +
+      ")"
+  )
   .action(() => {
     const o = JSON.parse(readFileSync("./package.json", { encoding: "utf8" }));
     if (!o.localAssets) o.localAssets = {};
@@ -37,4 +57,4 @@ program
       writeFileSync("./package.json", JSON.stringify(o, null, 2));
     }
   });
-program.parseOptions(process.argv);
+program.parse(process.argv);
