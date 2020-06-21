@@ -1,0 +1,37 @@
+{
+  "name": "@raydeck/local-assets",
+  "version": "1.0.0",
+  "description": "Elevate asset directories from designated dependencies to the module for distribution",
+  "main": "dist/index.js",
+  "typings": "dist/types",
+  "bin": "./dist/bin.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc && chmod +x dist/bin.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rhdeck/local-assets.git"
+  },
+  "keywords": [
+    "webpack",
+    "asset",
+    "hoist"
+  ],
+  "author": "Ray Deck",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rhdeck/local-assets/issues"
+  },
+  "homepage": "https://github.com/rhdeck/local-assets#readme",
+  "devDependencies": {
+    "@types/node": "^14.0.13",
+    "tsc": "^1.20150623.0",
+    "typescript": "^3.9.5"
+  },
+  "dependencies": {
+    "@raydeck/livelink": "^1.5.2",
+    "commander": "^5.1.0",
+    "recursive-copy": "^2.0.10"
+  }
+}
