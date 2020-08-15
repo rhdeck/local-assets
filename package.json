@@ -7,7 +7,8 @@
   "bin": "./dist/bin.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc && chmod +x dist/bin.js"
+    "build": "tsc && chmod +x dist/bin.js",
+    "prepublishOnly": "yarn build"
   },
   "repository": {
     "type": "git",
