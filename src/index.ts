@@ -6,7 +6,6 @@ function copyDependency(
   baseDir: string,
   rootAssetsPath: string
 ) {
-  console.log("Evaluating dependency", dependency);
   const path = join(baseDir, "node_modules", dependency);
   if (existsSync(path)) {
     let assetsPath = rootAssetsPath;
@@ -34,7 +33,6 @@ function copyLocalAssets(basePath = process.cwd()) {
     localAssets: { path: rootAssetsPath = "./assets", includeDev = false } = {},
   } = JSON.parse(readFileSync("./package.json", { encoding: "utf8" }));
   const baseDir = process.cwd();
-  console.log("dependencies are", dependencies);
   const copy = (d: string) => copyDependency(d, baseDir, rootAssetsPath);
   if (dependencies) Object.keys(dependencies).forEach(copy);
   if (devDependencies && includeDev) Object.keys(devDependencies).forEach(copy);

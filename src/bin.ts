@@ -13,7 +13,6 @@ program
       : ""
   )
   .action(() => {
-    console.log("hoisting assets");
     copyLocalAssets();
   });
 program
