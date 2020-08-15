@@ -1,6 +1,6 @@
 {
   "name": "@raydeck/local-assets",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Elevate asset directories from designated dependencies to the module for distribution",
   "main": "dist/index.js",
   "typings": "dist/types",
