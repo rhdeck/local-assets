@@ -3,7 +3,6 @@
   "version": "1.1.0",
   "description": "Elevate asset directories from designated dependencies to the module for distribution",
   "main": "dist/index.js",
-  "typings": "dist/types",
   "bin": "./dist/bin.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -27,6 +26,7 @@
   },
   "homepage": "https://github.com/rhdeck/local-assets#readme",
   "devDependencies": {
+    "@types/mustache": "^4.0.1",
     "@types/node": "^14.11.2",
     "install-peers-cli": "^2.2.0",
     "tsc": "^1.20150623.0",
