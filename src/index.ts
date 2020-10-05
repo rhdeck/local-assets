@@ -1,7 +1,11 @@
 import { join } from "path";
 import { existsSync, readFileSync } from "fs";
+import { render } from "mustache";
+import { readFile, PathLike } from "fs";
+import { promisify } from "util";
+import { get as registryGet } from "@raydeck/registry-manager";
 const recursiveCopy = require("recursive-copy");
-function copyDependency(
+export function copyDependency(
   dependency: string,
   baseDir: string,
   rootAssetsPath: string
@@ -25,7 +29,7 @@ function copyDependency(
     }
   }
 }
-function copyLocalAssets(basePath = process.cwd()) {
+export function copyLocalAssets(basePath = process.cwd()) {
   if (basePath !== process.cwd()) process.chdir(basePath);
   const {
     dependencies,
@@ -37,4 +41,21 @@ function copyLocalAssets(basePath = process.cwd()) {
   if (dependencies) Object.keys(dependencies).forEach(copy);
   if (devDependencies && includeDev) Object.keys(devDependencies).forEach(copy);
 }
-export { copyDependency, copyLocalAssets };
+const readFileAsync: (path: PathLike) => Promise<Buffer> = promisify(readFile);
+export async function loadAsset(key: string) {
+  const root = registryGet("assetsPath", "./assets");
+  const assetPath = join(root, key);
+  return await readFileAsync(assetPath);
+}
+export async function loadStringAsset(key: string) {
+  const buffer = await loadAsset(key);
+  const str = buffer.toString("utf8");
+  return str;
+}
+export async function loadRenderedAsset(
+  key: string,
+  view: Record<string, string>
+): Promise<string> {
+  const template = await loadStringAsset(key);
+  return render(template, view);
+}
