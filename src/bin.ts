@@ -1,5 +1,11 @@
 #!/usr/bin/env node
-import { readdir, readdirSync, readFileSync, writeFileSync } from "fs";
+import {
+  existsSync,
+  readdir,
+  readdirSync,
+  readFileSync,
+  writeFileSync,
+} from "fs";
 import { program } from "commander";
 import { copyLocalAssets } from "./";
 import { basename, join } from "path";
@@ -161,9 +167,14 @@ export const ${renderFunc} = ({${Object.keys(positionsObj).join(
         .map((key) => tsFromDir(join(process.cwd(), "node_modules", key)))
         .join("\n");
     ret = format(ret, { parser: "babel-ts" });
-    console.log("output is ", output);
-    if (output) writeFileSync(output, ret);
-    else console.log(ret);
+    if (output) {
+      if (
+        existsSync(output) &&
+        readFileSync(output, { encoding: "utf-8" }).trim() === ret.trim()
+      )
+        return;
+      writeFileSync(output, ret);
+    } else console.log(ret);
   });
 
 program.parse(process.argv);
