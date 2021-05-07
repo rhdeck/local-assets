@@ -3,7 +3,7 @@ import { existsSync, readFileSync } from "fs";
 import { render } from "mustache";
 import { readFile, PathLike } from "fs";
 import { promisify } from "util";
-import { get as registryGet } from "@raydeck/registry-manager";
+import { get as registryGet, getAll } from "@raydeck/registry-manager";
 const recursiveCopy = require("recursive-copy");
 export function copyDependency(
   dependency: string,
@@ -57,5 +57,5 @@ export async function loadRenderedAsset(
   view: Record<string, string>
 ): Promise<string> {
   const template = await loadStringAsset(key);
-  return render(template, view);
+  return render(template, { registry: getAll(), ...view });
 }
