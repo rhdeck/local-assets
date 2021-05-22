@@ -112,8 +112,9 @@ import { loadRenderedAsset } from '@raydeck/local-assets';
             });
             position = position + 2;
           } while (position > -1);
-          const positionsObj = positions.reduce(
-            (o, { position, endPosition, content, isRaw }) => {
+          const positionsObj = positions
+            .filter(({ content }) => !content.startsWith("registry."))
+            .reduce((o, { position, endPosition, content, isRaw }) => {
               if (!o[content]) {
                 return {
                   ...o,
@@ -134,9 +135,7 @@ import { loadRenderedAsset } from '@raydeck/local-assets';
                   },
                 };
               }
-            },
-            <{ [key: string]: any }>{}
-          );
+            }, <{ [key: string]: any }>{});
 
           const base = basename(file, ".html");
           const upperbase = base.charAt(0).toUpperCase() + base.slice(1);
