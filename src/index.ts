@@ -42,9 +42,13 @@ export function copyLocalAssets(basePath = process.cwd()) {
   if (devDependencies && includeDev) Object.keys(devDependencies).forEach(copy);
 }
 const readFileAsync: (path: PathLike) => Promise<Buffer> = promisify(readFile);
-export async function loadAsset(key: string) {
+export function getAssetPath(key?: string) {
   const root = registryGet("assetsPath", "./assets");
-  const assetPath = join(root, key);
+  if (key) return join(root, key);
+  else return root;
+}
+export async function loadAsset(key: string) {
+  const assetPath = getAssetPath(key);
   return await readFileAsync(assetPath);
 }
 export async function loadStringAsset(key: string) {
